@@ -12,36 +12,23 @@ jobs:
 
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-    - uses: actions/checkout@v2
-      
-    - name: 'Get Previous tag'
-      id: previoustag
-      uses: "WyriHaximus/github-action-get-previous-tag@master"
-      env:
-        GITHUB_TOKEN: "${{ secrets.GH_TOKEN }}"
-    - name: 'Get next minor version'
-      id: semvers
-      uses: "WyriHaximus/github-action-next-semvers@master"
-      with:
-        version: ${{ steps.previoustag.outputs.tag }}
-    - name: 'Create new milestone'
-      id: createmilestone
-      uses: "WyriHaximus/github-action-create-milestone@master"
-      with:
-        title: ${{ steps.semvers.outputs.patch }}
-      env:
-        GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-      
-    - name: print steps.previoustag.outputs.tag
-      run: echo ${{ steps.previoustag.outputs.tag }}
-      
-    - name: print ${GITHUB_REF##*/}
-      run: echo ${GITHUB_REF##*/}
+      - uses: actions/checkout@v2
 
-    - name: print $GITHUB_WORKSPACE
-      run: echo $GITHUB_WORKSPACE
-      
-    - name: Get the version
-      id: get_version
-      run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+      - id: fetch-latest-release
+        uses: thebritican/fetch-latest-release@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }
+        
+      - name: print steps.fetch-latest-release.outputs.tag_name
+        run: echo ${{ steps.previoustag.outputs.tag }}
+
+      - name: print ${GITHUB_REF##*/}
+        run: echo ${GITHUB_REF##*/}
+
+      - name: print $GITHUB_WORKSPACE
+        run: echo $GITHUB_WORKSPACE
+
+      - name: Get the version
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
 
