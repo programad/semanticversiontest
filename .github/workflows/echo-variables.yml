@@ -19,7 +19,7 @@ jobs:
             repository: programad/semanticversiontest
         
       - name: print latest
-        run: echo ${{ steps.previoustag.outputs.release }}
+        run: echo ${{ steps.latesttag.outputs.release }}
         
       - uses: actions/checkout@v2
 
