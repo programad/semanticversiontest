@@ -14,13 +14,13 @@ jobs:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      - id: fetch-latest-release
-        uses: thebritican/fetch-latest-release@v1
+      - id: latesttag
+        uses: pozetroninc/github-action-get-latest-release@master
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+            repository: programad/semanticversiontest
         
-      - name: print steps.fetch-latest-release.outputs.tag_name
-        run: echo ${{ steps.previoustag.outputs.tag }}
+      - name: print steps.latesttag.outputs.tag_name
+        run: echo ${{ steps.previoustag.outputs.release }}
 
       - name: print ${GITHUB_REF##*/}
         run: echo ${GITHUB_REF##*/}
